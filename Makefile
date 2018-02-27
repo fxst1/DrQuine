@@ -38,3 +38,4 @@ fclean : clean
 	rm -rf $(EXE_C)
 	rm -rf $(EXE_G)
 	rm -rf $(EXE_S)
+	rm -rf Sully_*
