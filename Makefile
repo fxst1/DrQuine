@@ -1,7 +1,7 @@
 FLAGS := -Wall -Wextra -Werror
 OBJDIR := obj/
 CC := cc
-
+ELF = elf
 SRC_C := Colleen.c
 OBJ_C := $(addprefix $(OBJDIR), $(SRC_C:.c=.o))
 EXE_C := Colleen
@@ -16,14 +16,22 @@ EXE_S := Sully
 
 all : $(EXE_C) $(EXE_G) $(EXE_S)
 
+asm : fclean
+	mkdir -p obj/asm/
+	nasm -f $(ELF) asm/Colleen.s -o obj/asm/Colleen.o
+	gcc -m32 obj/asm/Colleen.o -o $(EXE_C)
+
+	nasm -f $(ELF) asm/Grace.s -o obj/asm/Grace.o
+	gcc -m32 obj/asm/Grace.o -o $(EXE_G)
+
 $(EXE_C) : $(OBJ_C)
-	cc $(FLAGS) $(SRC_C) -o $(EXE_C)
+	cc $(FLAGS) $(OBJ_C) -o $(EXE_C)
 
 $(EXE_G) : $(OBJ_G)
-	cc $(FLAGS) $(SRC_G) -o $(EXE_G)
+	cc $(FLAGS) $(OBJ_G) -o $(EXE_G)
 
 $(EXE_S) : $(OBJ_S)
-	cc $(FLAGS) $(SRC_S) -o $(EXE_S)
+	cc $(FLAGS) $(OBJ_S) -o $(EXE_S)
 
 $(OBJDIR)%.o: %.c
 	@mkdir -p $(@D)
